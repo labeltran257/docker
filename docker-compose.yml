@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  servicio1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8052:80"
+    volumes:
+      - ./datadrive:/luis-2672501/datadrive  # Cambié la ruta de volumen local
+    networks:
+      - mynetwork
+    extra_hosts:
+      - "localhost:192.168.21.10"           #"tu_nombre_de_host:192.168.1.4"  # Cambia la IP a la de tu máquina
+    command: ["httpd-foreground"]  # Cambia CMD a command para corregir
+
+  servicio2:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: Sena2023
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: luis
+      MYSQL_PASSWORD: Sena2023
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  db_data:
